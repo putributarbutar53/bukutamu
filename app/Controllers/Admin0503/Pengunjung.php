@@ -44,4 +44,17 @@ class Pengunjung extends BaseController
         // Output the generated PDF (1 = download and 0 = preview)
         $dompdf->stream("data_pengunjung.pdf", array("Attachment" => 0));
     }
+    
+    public function delete($id)
+{
+    $deleted = $this->pengunjung->delete($id);
+
+    if ($deleted) {
+        return redirect()->to(site_url('admin0503/pengunjung'))->with('success', 'Data berhasil dihapus.');
+    } else {
+        return redirect()->to(site_url('admin0503/pengunjung'))->with('error', 'Ops! ID tidak valid atau data tidak dapat dihapus.');
+    }
+    
+}
+
 }

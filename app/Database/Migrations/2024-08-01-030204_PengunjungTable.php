@@ -8,6 +8,7 @@ class PengunjungTable extends Migration
 {
     public function up()
     {
+        // Membuat tabel dengan kolom-kolom awal
         $this->forge->addField([
             'id' => [
                 'type'           => 'INT',
@@ -18,10 +19,22 @@ class PengunjungTable extends Migration
                 'type'       => 'VARCHAR',
                 'constraint' => '16',
             ],
-            'created_at' => [
-                'type' => 'DATETIME',
-                'null' => true,
+            'foto' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '255',
+                'null'       => true,
             ],
+            'tanda_tangan' => [
+                'type'       => 'TEXT',
+                'null'       => true,
+            ],
+            'created_at' => [
+            'type' => 'TIMESTAMP',
+            'null' => true,
+            'default' => 'CURRENT_TIMESTAMP',
+
+            ],
+        
         ]);
 
         $this->forge->addKey('id', true);

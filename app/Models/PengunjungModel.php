@@ -4,36 +4,33 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-
 class PengunjungModel extends Model
 {
-    protected $table = 'pengunjung'; // Nama tabel
-    protected $primaryKey = 'id'; // Nama kolom primary key
+    protected $table = 'pengunjung'; // Nama tabel yang digunakan di database
+    protected $primaryKey = 'id'; // Primary key dari tabel
 
     protected $allowedFields = [
-        'nik', 'tujuan', 'kepentingan', 'created_at'
-    ];
+        'nik', 'tujuan', 'kepentingan', 'created_at', 'foto', 'tanda_tangan'
+    ]; // Kolom-kolom yang diizinkan untuk diisi/dimodifikasi
 
-    protected $returnType = 'array'; // Tipe data yang dikembalikan oleh query
+    protected $returnType = 'array'; // Tipe data yang dikembalikan adalah array
 
-    // Fungsi untuk mencari data berdasarkan NIK
+    // Fungsi untuk mencari data pengunjung berdasarkan NIK
     public function getDataByNik($nik)
     {
         return $this->where('nik', $nik)->first();
     }
 
-    // Fungsi untuk mendapatkan semua data
+    // Fungsi untuk mendapatkan semua data pengunjung
     public function getAllData()
     {
         return $this->findAll();
     }
 
-    public function getAllDataWithRelation()
+    // Fungsi untuk menghapus data pengunjung berdasarkan ID
+    public function deleteData($id)
     {
-        $builder = $this->db->table($this->table);
-        $builder->select('pengunjung.*, db_data.nama, db_data.alamat, db_data.kecamatan');
-        $builder->join('db_data', 'db_data.nik = pengunjung.nik', 'left'); // Menggunakan LEFT JOIN
-        $builder->orderBy('pengunjung.created_at', 'DESC'); // Mengurutkan berdasarkan created_at secara menurun
-        return $builder->get()->getResultArray();
+        // Menghapus data pengunjung berdasarkan ID
+        return $this->delete($id);
     }
 }

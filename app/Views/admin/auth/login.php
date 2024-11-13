@@ -1,3 +1,6 @@
+<?php
+$session = session(); // Mengambil session
+?>
 <!DOCTYPE html>
 <html lang="en-US" dir="ltr">
 
@@ -6,68 +9,94 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
-    <!-- ===============================================-->
-    <!--    Document Title-->
-    <!-- ===============================================-->
     <title>SIRAMA | Login</title>
 
-
-    <!-- ===============================================-->
-    <!--    Favicons-->
-    <!-- ===============================================-->
     <link rel="apple-touch-icon" sizes="180x180" href="<?= base_url() ?>assets/img/favicons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url() ?>assets/img/favicons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url() ?>assets/img/favicons/favicon-16x16.png">
     <link rel="shortcut icon" type="image/x-icon" href="<?= base_url() ?>assets/img/favicons/favicon.ico">
     <link rel="manifest" href="<?= base_url() ?>assets/img/favicons/manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <meta name="msapplication-TileImage" content="<?= base_url() ?>assets/img/favicons/mstile-150x150.png">
     <meta name="theme-color" content="#ffffff">
 
-
-    <!-- ===============================================-->
-    <!--    Stylesheets-->
-    <!-- ===============================================-->
-    <script src="<?= base_url() ?>assets/js/config.navbar-vertical.js"></script>
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
     <link href="<?= base_url() ?>assets/lib/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet">
     <link href="<?= base_url() ?>assets/css/theme.css" rel="stylesheet">
 
-</head>
+    <style>
+        body {
+            background-image: url('<?= base_url() ?>assets/img/0.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
+        .card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px); /* Menambahkan efek blur pada background */
+            border-radius: 15px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+            margin: 20px;
+        }
+
+        h5 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4a90e2, #9013fe);
+            border: none;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #9013fe, #4a90e2);
+        }
+
+        .text-600 a {
+            color: #4a90e2;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .card {
+                padding: 20px;
+                width: 90%;
+            }
+        }
+    </style>
+</head>
 
 <body>
 
-    <!-- ===============================================-->
-    <!--    Main Content-->
-    <!-- ===============================================-->
     <main class="main" id="top">
-
-
-        <div class="container" data-layout="container">
+        <div class="container">
             <div class="row flex-center min-vh-100 py-6">
-                <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
-                    <?php
-                    $session = \Config\Services::session();
-                    if ($session->getFlashdata('warning')) {
-                    ?>
-                        <?php
-                        foreach ($session->getFlashdata('warning') as $val) {
-                        ?><div class="alert alert-warning alert-dismissible mb-1 fade show" role="alert"><?= $val ?>
-                                <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="font-weight-light" aria-hidden="true">×</span></button>
-                            </div>
-                        <?php
-                        }
-                        ?>
-                    <?php
-                    }
-                    if ($session->getFlashdata('success')) {
-                    ?>
-                        <div class="alert alert-success"><?php echo $session->getFlashdata('success') ?></div>
-                    <?php
-                    }
-                    ?>
+                <div class="col-12">
                     <div class="card">
                         <div class="card-body p-4 p-sm-5">
                             <div class="row text-left justify-content-between align-items-center mb-2">
@@ -97,28 +126,11 @@
             </div>
         </div>
     </main>
-    <!-- ===============================================-->
-    <!--    End of Main Content-->
-    <!-- ===============================================-->
 
-
-
-
-    <!-- ===============================================-->
-    <!--    JavaScripts-->
-    <!-- ===============================================-->
     <script src="<?= base_url() ?>assets/js/jquery.min.js"></script>
     <script src="<?= base_url() ?>assets/js/popper.min.js"></script>
     <script src="<?= base_url() ?>assets/js/bootstrap.min.js"></script>
-    <script src="<?= base_url() ?>assets/lib/@fortawesome/all.min.js"></script>
-    <script src="<?= base_url() ?>assets/lib/stickyfilljs/stickyfill.min.js"></script>
-    <script src="<?= base_url() ?>assets/lib/sticky-kit/sticky-kit.min.js"></script>
-    <script src="<?= base_url() ?>assets/lib/is_js/is.min.js"></script>
-    <script src="<?= base_url() ?>assets/lib/lodash/lodash.min.js"></script>
-    <script src="<?= base_url() ?>assets/lib/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700%7cPoppins:100,200,300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
     <script src="<?= base_url() ?>assets/js/theme.js"></script>
-
 </body>
 
 </html>

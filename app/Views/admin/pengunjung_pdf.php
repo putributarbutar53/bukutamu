@@ -84,6 +84,8 @@
                 <th>Tujuan</th>
                 <th>Kepentingan</th>
                 <th>Tanggal</th>
+                <th class="sort">Foto</th>
+                <th class="sort">Tanda Tangan</th>
             </tr>
         </thead>
         <tbody>
