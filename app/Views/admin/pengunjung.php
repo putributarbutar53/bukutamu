@@ -41,30 +41,39 @@
                                 <tr>
                                     <td class="text-center"><?= $no++; ?></td>
                                     <td><?= !empty($row['nama']) ? $row['nama'] : $row['nik'] . ' (Bukan Warga Toba)'; ?></td>
-                                    <td><?= $row['alamat']; ?></td>
+                                    <td><?= !empty($row['alamat']) ? $row['alamat'] : 'Alamat tidak ditemukan'; ?></td>
                                     <td><?= $row['kecamatan']; ?></td>
                                     <td><?= $row['tujuan']; ?></td>
                                     <td><?= $row['kepentingan']; ?></td>
                                     <td class="text-center"><?= $row['created_at']; ?></td>
                                     <td class="text-center">
-    <?php if (!empty($row['foto']) && file_exists($row['foto'])) : ?>
-        <img src="<?= base_url($row['foto']); ?>" alt="Foto Pengunjung" style="width: 50px; height: auto;">
-    <?php else : ?>
-        -
-    <?php endif; ?>
-</td>
-<td class="text-center">
-    <?php if (!empty($row['tanda_tangan']) && file_exists($row['tanda_tangan'])) : ?>
-        <img src="<?= base_url($row['tanda_tangan']); ?>" alt="Tanda Tangan Pengunjung" style="width: 50px; height: auto;">
-    <?php else : ?>
-        -
-    <?php endif; ?>
-</td>
+                                        <?php
+                                        $fotoPath = getenv('dir.uploads.foto') . $row['foto'];
+
+                                        if (!empty($row['foto']) && file_exists(FCPATH . $fotoPath)) :
+                                        ?>
+                                            <img src="<?= base_url($fotoPath); ?>" alt="Foto Pengunjung" style="width: 50px; height: auto;">
+                                        <?php else : ?>
+                                            -
+                                        <?php endif; ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php
+                                        $ttdPath = getenv('dir.uploads.ttd') . $row['tanda_tangan'];
+
+                                        if (!empty($row['tanda_tangan']) && file_exists(FCPATH . $ttdPath)) :
+                                        ?>
+                                            <img src="<?= base_url($ttdPath); ?>" alt="Tanda tangan" style="width: 50px; height: auto;">
+                                        <?php else : ?>
+                                            -
+                                        <?php endif; ?>
+                                    </td>
+
 
                                     <td class="text-center">
-                                        <a href="<?= site_url('admin0503/pengunjung/delete/' . $row['id']) ?>" 
-                                        class="btn btn-danger btn-sm"
-                                        onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                                        <a href="<?= site_url('admin0503/pengunjung/delete/' . $row['id']) ?>"
+                                            class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </td>
@@ -76,6 +85,7 @@
                             </tr>
                         <?php endif; ?>
                     </tbody>
+
                 </table>
             </div>
         </div>

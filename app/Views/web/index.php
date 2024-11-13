@@ -208,6 +208,8 @@
 
             <form id="main-form" class="footer-subscribe-form mt-4 p-4" action="<?= site_url('home/submit') ?>" method="post">
                 <?= csrf_field() ?>
+                <input type="hidden" id="foto-input" name="foto">
+                <input type="hidden" id="tanda-tangan-input" name="tanda_tangan">
                 <div class="row">
                     <div class="col-12 col-md-6 mb-3">
                         <input id="nik-input" name="nik" class="form-control" type="number" placeholder="NIK" style="width: 100%; box-sizing: border-box;" />
@@ -229,12 +231,11 @@
                 </div>
 
                 <div class="row">
-
                     <!-- Area Textarea untuk Kepentingan -->
                     <div class="col-md-6 mb-3">
                         <textarea id="kepentingan-input" name="kepentingan" class="form-control" rows="4" placeholder="Kepentingan" style="width: 100%; box-sizing: border-box;"></textarea>
                     </div>
-
+                    
                     <!-- Area Canvas untuk Tanda Tangan -->
                     <div class="col-md-6 mb-3">
                         <canvas id="signature-canvas" width="300" height="110" style="border:1px solid #000;"></canvas>
@@ -263,7 +264,7 @@
                         </div>
                     </div>
                 </div>
-
+                
             </form>
         </div>
         <!-- Modal -->
@@ -388,126 +389,204 @@
         });
     </script>
     <script>
-        const swiper = new Swiper('.swiper', {
-            // Swiper options
-            on: {
-                slideChange: function() {
-                    const form = document.querySelector('.form-container');
-                    form.style.display = 'block'; // Always display the form
-                },
-                init: function() {
-                    const form = document.querySelector('.form-container');
-                    form.style.display = 'block';
-                }
-            }
-        });
-
-        function speak(text) {
-            if ('speechSynthesis' in window) {
-                const synth = window.speechSynthesis;
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'id-ID'; // Bahasa Indonesia
-                console.log('Speaking:', text); // Log untuk memastikan fungsi dipanggil
-                synth.speak(utterance);
-            } else {
-                console.error('Speech synthesis not supported in this browser.');
+    // Initialize Swiper with event listeners
+    const swiper = new Swiper('.swiper', {
+        on: {
+            slideChange: function() {
+                const form = document.querySelector('.form-container');
+                if (form) form.style.display = 'block';
+            },
+            init: function() {
+                const form = document.querySelector('.form-container');
+                if (form) form.style.display = 'block';
             }
         }
-        document.getElementById('main-form').addEventListener('submit', function(e) {
-            e.preventDefault(); // Mencegah form dari submit default
+    });
 
-            // Ambil nilai dari form
-            const nik = document.getElementById('nik-input').value.trim();
-            const tujuan = document.getElementById('tujuan-input').value.trim();
-            const kepentingan = document.getElementById('kepentingan-input').value.trim();
-            const isPhotoTaken = document.getElementById('photoPreview').src !== '';
-            // Mengambil elemen canvas dan konteks
-            const signatureCanvas = document.getElementById('signature-canvas');
-            const signatureContext = signatureCanvas.getContext('2d');
+    // Function to enable speech synthesis
+    function speak(text) {
+        if ('speechSynthesis' in window) {
+            const synth = window.speechSynthesis;
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'id-ID';
+            console.log('Speaking:', text);
+            synth.speak(utterance);
+        } else {
+            console.error('Speech synthesis not supported in this browser.');
+        }
+    }
 
-            // Menghapus konten canvas dan mengatur latar belakang putih
-            function clearCanvas() {
-                // Menghapus konten canvas
-                signatureContext.clearRect(0, 0, signatureCanvas.width, signatureCanvas.height);
+    // Function to convert canvas content to Blob
+    function getCanvasBlob(canvas) {
+        return new Promise(resolve => {
+            canvas.toBlob(blob => {
+                resolve(blob);
+            }, 'image/png');
+        });
+    }
 
-                // Mengatur latar belakang putih
-                signatureContext.fillStyle = '#FFFFFF'; // Warna putih
-                signatureContext.fillRect(0, 0, signatureCanvas.width, signatureCanvas.height); // Menggambar kotak putih
-            }
+    // Function to handle form submission
+    document.getElementById('main-form').addEventListener('submit', async function(e) {
+        e.preventDefault(); // Prevent default form submission
+        const nikInput = document.getElementById('nik-input');
+        const tujuanInput = document.getElementById('tujuan-input');
+        const kepentinganInput = document.getElementById('kepentingan-input');
+        const photoCanvas = document.getElementById('photoCanvas');
+        const signatureCanvas = document.getElementById('signature-canvas');
+        const photoPreview = document.getElementById('photoPreview');
 
-            // Event listener untuk tombol Clear TTD
-            document.getElementById('clear-canvas').addEventListener('click', clearCanvas);
-            let errorMessage = '';
+        // Check if all required fields are filled
+        if (!nikInput.value) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Mohon untuk mengisi NIK',
+                text: 'NIK tidak boleh kosong.'
+            });
+            return;
+        }
 
-            // Validasi input
-            if (!nik) errorMessage += 'NIK belum diisi.<br>';
-            if (!tujuan) errorMessage += 'Tujuan belum dipilih.<br>';
-            if (!kepentingan) errorMessage += 'Kepentingan belum diisi.<br>';
-            if (!isPhotoTaken) errorMessage += 'Foto belum diambil.<br>';
+        if (!tujuanInput.value) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Mohon untuk memilih tujuan',
+                text: 'Tujuan harus dipilih.'
+            });
+            return;
+        }
 
-            // Tampilkan pesan jika ada kesalahan
-            if (errorMessage) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Perhatian!',
-                    html: errorMessage // Menggunakan HTML untuk menampilkan pesan kesalahan dalam format daftar
-                });
-                return;
-            }
+        if (!kepentinganInput.value) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Mohon untuk mengisi kepentingan',
+                text: 'Kepentingan tidak boleh kosong.'
+            });
+            return;
+        }
 
-            var form = e.target;
-            var formData = new FormData(form);
+        if (!photoPreview.src) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Mohon untuk mengambil gambar diri',
+                text: 'Foto diri harus diambil.'
+            });
+            return;
+        }
 
-            fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const welcomeText = data.nama ? `Selamat datang, ${data.nama}` : 'Selamat datang';
+        // Check if signature canvas has been signed (by checking if it's not all white)
+        if (!signatureCanvas || !isCanvasSigned(signatureCanvas)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Mohon untuk menandatangani',
+                text: 'Tanda tangan tidak boleh kosong.'
+            });
+            return;
+        }
 
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Selamat Datang!',
-                            text: data.nama,
-                            timer: 2000,
-                            showConfirmButton: false,
-                            didOpen: () => {
-                                speak(welcomeText);
-                            }
-                        }).then(() => {
-                            // Reset form
-                            form.reset();
+        try {
+            // Prepare FormData to send as multipart data
+            const formData = new FormData(e.target);
 
-                            // Hapus preview foto
-                            const photoPreview = document.getElementById('photoPreview');
-                            photoPreview.src = ''; // Hapus sumber gambar
-                            photoPreview.style.display = 'none'; // Sembunyikan elemen gambar
+            // Append photo and signature as files to FormData
+            formData.append('foto', await getCanvasBlob(photoCanvas), 'foto.png');
+            formData.append('tanda_tangan', await getCanvasBlob(signatureCanvas), 'tanda_tangan.png');
 
-                            clearCanvas();
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error!',
-                            text: data.message
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
+            // Send data using fetch
+            fetch(e.target.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Response Data:', data); // Log response data
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: 'Data berhasil disimpan.'
+                    });
+                    // Reset form and clear canvas
+                    e.target.reset();
+                    document.getElementById('photoPreview').style.display = 'none';
+                    clearCanvas();  // Clear canvas and set to white
+                } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: 'Terjadi kesalahan pada server.'
+                        text: data.message
                     });
+                    console.error('Server Error:', data.errors || data.message); // Log server error
+                }
+            })
+            .catch(error => {
+                console.error('Fetch Error:', error); // Log fetch error
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Terjadi kesalahan pada server.'
                 });
-        });
-    </script>
+            });
+        } catch (error) {
+            console.error('Form Submission Error:', error); // Log form submission error
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Terjadi kesalahan pada proses pengiriman data.'
+            });
+        }
+    });
+
+    // Function to check if canvas has been signed (if it is not all white)
+    function isCanvasSigned(canvas) {
+        const ctx = canvas.getContext('2d');
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+
+        // Check if any pixel is not white
+        for (let i = 0; i < data.length; i += 4) {
+            // Check for non-white pixel (non-white means the signature is present)
+            if (data[i] !== 255 || data[i + 1] !== 255 || data[i + 2] !== 255) {
+                return true; // Signature exists
+            }
+        }
+        return false; // No signature detected
+    }
+
+    // Function to clear the signature canvas
+    document.getElementById('clear-canvas').addEventListener('click', function() {
+        const signatureCanvas = document.getElementById('signature-canvas');
+        if (signatureCanvas) {
+            const ctx = signatureCanvas.getContext('2d');
+            ctx.clearRect(0, 0, signatureCanvas.width, signatureCanvas.height);
+            ctx.fillStyle = '#ffffff';  // Set background to white
+            ctx.fillRect(0, 0, signatureCanvas.width, signatureCanvas.height);  // Fill with white
+        }
+    });
+
+    // Function to clear both canvases and reset to white
+    function clearCanvas() {
+        const photoCanvas = document.getElementById('photoCanvas');
+        const signatureCanvas = document.getElementById('signature-canvas');
+        if (photoCanvas) {
+            const ctx = photoCanvas.getContext('2d');
+            ctx.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
+            ctx.fillStyle = '#ffffff';  // Set background to white
+            ctx.fillRect(0, 0, photoCanvas.width, photoCanvas.height);  // Fill with white
+        }
+        if (signatureCanvas) {
+            const ctx = signatureCanvas.getContext('2d');
+            ctx.clearRect(0, 0, signatureCanvas.width, signatureCanvas.height);
+            ctx.fillStyle = '#ffffff';  // Set background to white
+            ctx.fillRect(0, 0, signatureCanvas.width, signatureCanvas.height);  // Fill with white
+        }
+    }
+</script>
+
+
+
     <script>
         const canvas = document.getElementById('signature-canvas');
         const context = canvas.getContext('2d');

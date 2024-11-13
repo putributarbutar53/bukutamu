@@ -99,14 +99,45 @@
                         <td><?= $row['tujuan']; ?></td>
                         <td><?= $row['kepentingan']; ?></td>
                         <td><?= $row['created_at']; ?></td>
+
+                        <!-- Foto -->
+                        <td class="text-center">
+                            <?php
+                            $fotoPath = getenv('dir.uploads.foto') . $row['foto'];
+                            if (!empty($row['foto']) && file_exists(FCPATH . $fotoPath)) :
+                            ?>
+                                <!-- Gunakan Fancybox untuk foto -->
+                                <a href="<?= base_url($fotoPath); ?>" data-fancybox="gallery" data-caption="Foto Pengunjung">
+                                    <img src="<?= base_url($fotoPath); ?>" alt="Foto Pengunjung" style="width: 50px; height: auto;">
+                                </a>
+                            <?php else : ?>
+                                -
+                            <?php endif; ?>
+                        </td>
+
+                        <!-- Tanda Tangan -->
+                        <td class="text-center">
+                            <?php
+                            $ttdPath = getenv('dir.uploads.ttd') . $row['tanda_tangan'];
+                            if (!empty($row['tanda_tangan']) && file_exists(FCPATH . $ttdPath)) :
+                            ?>
+                                <!-- Gunakan Fancybox untuk tanda tangan -->
+                                <a href="<?= base_url($ttdPath); ?>" data-fancybox="gallery" data-caption="Tanda Tangan Pengunjung">
+                                    <img src="<?= base_url($ttdPath); ?>" alt="Tanda Tangan Pengunjung" style="width: 50px; height: auto;">
+                                </a>
+                            <?php else : ?>
+                                -
+                            <?php endif; ?>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             <?php else : ?>
                 <tr>
-                    <td colspan="6" class="text-center">No data available</td>
+                    <td colspan="8" class="text-center">No data available</td>
                 </tr>
             <?php endif; ?>
         </tbody>
+
     </table>
 
     <div class="footer">

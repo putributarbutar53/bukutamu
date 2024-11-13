@@ -50,122 +50,80 @@ class Home extends BaseController
 
         return view('web/index', $data);
     }
-
     public function submit()
     {
-        // Ambil data input dari form
+        // Pastikan form ini hanya dapat diakses dengan metode POST
+        if ($this->request->getMethod() !== 'post') {
+            return $this->response->setJSON(['success' => false, 'message' => 'Invalid request method.']);
+        }
+    
+        // Validasi input
         $nik = $this->request->getPost('nik');
         $tujuan = $this->request->getPost('tujuan');
         $kepentingan = $this->request->getPost('kepentingan');
-        $fotoBase64 = $this->sanitizeBase64($this->request->getPost('foto'));
-        $tandaTanganBase64 = $this->sanitizeBase64($this->request->getPost('tanda_tangan'));
-
-        // Cek apakah data base64 valid
-        if (!$fotoBase64 || !$tandaTanganBase64) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Data foto atau tanda tangan tidak valid.',
-            ]);
+    
+        if (!$nik || !$tujuan || !$kepentingan) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Please complete all fields.']);
         }
-
-        // Dapatkan MIME type untuk foto dan tanda tangan
-        $fotoMimeType = $this->getMimeType($fotoBase64);
-        $tandaTanganMimeType = $this->getMimeType($tandaTanganBase64);
-
-        // Tentukan ekstensi file berdasarkan MIME type
-        $fotoExt = ($fotoMimeType == 'image/jpeg') ? 'jpg' : 'png';
-        $tandaTanganExt = ($tandaTanganMimeType == 'image/jpeg') ? 'jpg' : 'png';
-
-        // Konversi Base64 menjadi biner
-        $fotoBinary = base64_decode($fotoBase64, true);
-        $tandaTanganBinary = base64_decode($tandaTanganBase64, true);
-
-        // Periksa apakah decoding berhasil
-        if ($fotoBinary === false || $tandaTanganBinary === false) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Gagal mendekode foto atau tanda tangan.',
-            ]);
+    
+        // Proses upload file foto
+        $foto = $this->request->getFile('foto');
+        $tanda_tangan = $this->request->getFile('tanda_tangan');
+    
+        // Pastikan file foto dan tanda tangan tersedia dan valid
+        if (!$foto->isValid() || !$tanda_tangan->isValid()) {
+            return $this->response->setJSON(['success' => false, 'message' => 'File upload failed.']);
         }
-
-        // Direktori penyimpanan foto dan tanda tangan
-        $fotoDir = 'uploads/foto/';
-        $tandaTanganDir = 'uploads/tanda_tangan/';
-
-        // Membuat direktori jika belum ada
-        if (!is_dir($fotoDir)) {
-            if (!mkdir($fotoDir, 0777, true)) {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Gagal membuat direktori foto.',
-                ]);
-            }
+    
+        // Tentukan folder penyimpanan berdasarkan path yang diberikan
+        $fotoUploadPath = FCPATH . 'uploads/foto/';
+        $ttdUploadPath = FCPATH . 'uploads/tanda_tangan/';
+    
+        // Cek apakah folder penyimpanan ada, jika tidak buat foldernya
+        if (!is_dir($fotoUploadPath)) {
+            mkdir($fotoUploadPath, 0755, true);
         }
-        if (!is_dir($tandaTanganDir)) {
-            if (!mkdir($tandaTanganDir, 0777, true)) {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Gagal membuat direktori tanda tangan.',
-                ]);
-            }
+        if (!is_dir($ttdUploadPath)) {
+            mkdir($ttdUploadPath, 0755, true);
         }
-
-        // Nama file unik
-        $fotoPath = $fotoDir . time() . '_foto.' . $fotoExt;
-        $tandaTanganPath = $tandaTanganDir . time() . '_tanda_tangan.' . $tandaTanganExt;
-
-        // Simpan file foto dan tanda tangan ke folder
-        if (file_put_contents($fotoPath, $fotoBinary) === false || file_put_contents($tandaTanganPath, $tandaTanganBinary) === false) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Gagal menyimpan foto atau tanda tangan.',
-            ]);
+    
+        // Simpan file foto dan tanda tangan
+        try {
+            $fotoName = $foto->getRandomName();
+            $foto->move($fotoUploadPath, $fotoName);
+    
+            $ttdName = $tanda_tangan->getRandomName();
+            $tanda_tangan->move($ttdUploadPath, $ttdName);
+        } catch (\Exception $e) {
+            log_message('error', 'File saving failed: ' . $e->getMessage());
+            return $this->response->setJSON(['success' => false, 'message' => 'File saving failed: ' . $e->getMessage()]);
         }
-
-        // Simpan data ke database
+    
+        // Siapkan data untuk disimpan di database
         $data = [
             'nik' => $nik,
             'tujuan' => $tujuan,
             'kepentingan' => $kepentingan,
-            'foto' => $fotoPath,
-            'tanda_tangan' => $tandaTanganPath,
+            'foto' => $fotoName,
+            'tanda_tangan' => $ttdName
         ];
-
-        // Insert data ke tabel pengunjung
-        if ($this->pengunjung->insert($data)) {
-            return $this->response->setJSON([
-                'success' => true,
-                'message' => 'Data berhasil disimpan.',
-            ]);
-        } else {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Gagal menyimpan data pengunjung.',
-            ]);
+    
+        // Coba simpan ke database menggunakan try-catch
+        try {
+            if ($this->pengunjung->insert($data)) {
+                return $this->response->setJSON(['success' => true, 'message' => 'Data berhasil disimpan.']);
+            } else {
+                $dbError = $this->pengunjung->errors();
+                log_message('error', 'Database Error: ' . json_encode($dbError));
+                return $this->response->setJSON(['success' => false, 'message' => 'Database insertion failed.', 'errors' => $dbError]);
+            }
+        } catch (\Exception $e) {
+            log_message('error', 'Exception: ' . $e->getMessage());
+            return $this->response->setJSON(['success' => false, 'message' => 'Server Error: ' . $e->getMessage()]);
         }
     }
+    
 
-    // Fungsi untuk sanitasi base64
-    private function sanitizeBase64($base64String)
-    {
-        // Cek apakah ada prefiks base64
-        if (strpos($base64String, 'base64,') !== false) {
-            $base64String = explode('base64,', $base64String)[1];
-        }
-        return $base64String;
-    }
-
-    // Fungsi untuk mendapatkan MIME type dari base64
-    private function getMimeType($base64String)
-    {
-        $binary = base64_decode($base64String, true);
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mimeType = finfo_buffer($finfo, $binary);
-        finfo_close($finfo);
-        return $mimeType;
-    }
-
-    // Fungsi untuk menghapus pengunjung
     public function delete($id)
     {
         if ($this->pengunjung->delete($id)) {

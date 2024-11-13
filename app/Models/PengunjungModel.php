@@ -10,7 +10,12 @@ class PengunjungModel extends Model
     protected $primaryKey = 'id'; // Primary key dari tabel
 
     protected $allowedFields = [
-        'nik', 'tujuan', 'kepentingan', 'created_at', 'foto', 'tanda_tangan'
+        'nik',
+        'tujuan',
+        'kepentingan',
+        'created_at',
+        'foto',
+        'tanda_tangan'
     ]; // Kolom-kolom yang diizinkan untuk diisi/dimodifikasi
 
     protected $returnType = 'array'; // Tipe data yang dikembalikan adalah array
@@ -32,5 +37,15 @@ class PengunjungModel extends Model
     {
         // Menghapus data pengunjung berdasarkan ID
         return $this->delete($id);
+    }
+    public function getPengunjungWithData()
+    {
+        // Query untuk mengambil data pengunjung dan menggabungkannya dengan data dari tabel db_data
+        $builder = $this->db->table('pengunjung');
+        $builder->select('pengunjung.*, db_data.nama, db_data.alamat, db_data.kecamatan');  // Pilih kolom yang diperlukan
+        $builder->join('db_data', 'db_data.nik = pengunjung.nik', 'left');  // Join dengan db_data berdasarkan nik
+        $query = $builder->get();
+
+        return $query->getResultArray();
     }
 }
