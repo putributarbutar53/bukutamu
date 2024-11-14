@@ -52,7 +52,9 @@
 
                                         if (!empty($row['foto']) && file_exists(FCPATH . $fotoPath)) :
                                         ?>
-                                            <img src="<?= base_url($fotoPath); ?>" alt="Foto Pengunjung" style="width: 50px; height: auto;">
+                                            <a href="<?= base_url($fotoPath); ?>" data-fancybox="gallery" data-caption="Foto Pengunjung">
+                                                <img src="<?= base_url($fotoPath); ?>" alt="Foto Pengunjung" style="width: 50px; height: auto;">
+                                            </a>
                                         <?php else : ?>
                                             -
                                         <?php endif; ?>
@@ -63,11 +65,14 @@
 
                                         if (!empty($row['tanda_tangan']) && file_exists(FCPATH . $ttdPath)) :
                                         ?>
-                                            <img src="<?= base_url($ttdPath); ?>" alt="Tanda tangan" style="width: 50px; height: auto;">
+                                            <a href="<?= base_url($ttdPath); ?>" data-fancybox="gallery" data-caption="Tanda Tangan">
+                                                <img src="<?= base_url($ttdPath); ?>" alt="Tanda Tangan" style="width: 50px; height: auto;">
+                                            </a>
                                         <?php else : ?>
                                             -
                                         <?php endif; ?>
                                     </td>
+
 
 
                                     <td class="text-center">

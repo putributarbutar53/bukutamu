@@ -27,6 +27,7 @@
     <script src="<?= base_url() ?>assets/js/config.navbar-vertical.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
     <link href="<?= base_url() ?>assets/lib/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet">
+    <link href="<?= base_url() ?>assets/lib/fancybox/jquery.fancybox.min.css" rel="stylesheet">
     <link href="<?= base_url() ?>assets/lib/prismjs/prism-okaidia.css" rel="stylesheet">
     <link href="<?= base_url() ?>assets/lib/datatables-bs4/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="<?= base_url() ?>assets/lib/datatables.net-responsive-bs4/responsive.bootstrap4.css" rel="stylesheet">
@@ -87,6 +88,7 @@
     <script src="<?= base_url() ?>assets/lib/is_js/is.min.js"></script>
     <script src="<?= base_url() ?>assets/lib/lodash/lodash.min.js"></script>
     <script src="<?= base_url() ?>assets/lib/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="<?= base_url() ?>assets/lib/fancybox/jquery.fancybox.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700%7cPoppins:100,200,300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
     <script src="<?= base_url() ?>assets/lib/prismjs/prism.js"></script>
 
