@@ -22,7 +22,7 @@
     <div class="card-header">
         <div class="row flex-between-center">
             <div class="col">
-                <button class="btn btn-primary" onclick="adddata()"><i class="fas fa-plus-square"></i> Tambah Admin</button>
+                <button class="btn btn-success" onclick="adddata()"><i class="fas fa-plus-square"></i> Tambah Admin</button>
             </div>
         </div>
     </div>
@@ -34,7 +34,6 @@
                         <tr>
                             <th><b>Name</b></th>
                             <th><b>Username</b></th>
-                            <th><b>Desa</b></th>
                             <th data-orderable="false"><b>#</b></th>
                         </tr>
                     </thead>
@@ -53,14 +52,14 @@
             'serverSide': true,
             'scrollX': true,
             'serverMethod': 'post',
-            'searchDelay': '350',
+            'searchDelay': 350,
             'responsive': false,
             'lengthChange': true,
             'autoWidth': true,
             'sWrapper': 'falcon-data-table-wrapper',
 
             'ajax': {
-                'url': '<?= site_url('admin2053/admin/loaddata') ?>',
+                'url': '<?= site_url('admin0503/admin/loaddata') ?>',
                 'headers': {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
@@ -72,19 +71,14 @@
                     data: 'username'
                 },
                 {
-                    data: 'desa'
-                },
-                {
-                    data: 'navButton',
+                    data: 'navButton', // This field is now returned by your backend
                     render: function(data, type, row) {
-                        if (row.username != 'admin')
-                            return '<button onclick="editdata(' + row.id + ')" class="btn btn-sm btn-falcon-warning mb-1"><i class="fas fa-pen-square"></i></button>&nbsp;<button onclick="deletedata(' + row.id + ')" class="btn btn-sm btn-falcon-danger mb-1"><i class="fas fa-trash-alt"></i></button>';
-                        else return "";
+                        return data; // The navButton field is already rendered on the backend
                     }
                 },
             ],
             'order': [
-                [2, 'desc']
+                [0, 'asc'] // Ordering by Name (column 0)
             ],
             'language': {
                 'emptyTable': 'Belum ada data'
@@ -105,19 +99,16 @@
         $("#click_yes").off("click").on("click", function() {
             $.ajax({
                 type: 'DELETE',
-                url: "<?= site_url('admin2053/admin/deletedata') ?>/" + iddata,
+                url: "<?= site_url('admin0503/admin/deletedata') ?>/" + iddata,
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response) {
                     $('#alert_modal').modal('hide');
-                    // Tanggapan sukses
                     showToast('success', response.message);
-                    // Refresh tabel setelah penghapusan data
-                    dataindex();
+                    dataindex(); // Refresh the table
                 },
                 error: function(xhr, status, error) {
-                    // Tanggapan error
                     showToastError(error, xhr.responseJSON);
                 }
             });
@@ -125,18 +116,19 @@
     }
 
     function editdata(iddata) {
-        $.get("<?= site_url('admin2053/admin/edit') ?>/" + iddata, function(data, status) {
+        $.get("<?= site_url('admin0503/admin/edit') ?>/" + iddata, function(data, status) {
             $("#editor_add").html(data);
             $('#add').modal('toggle');
         });
     }
 
     function adddata() {
-        $('#editor_add').load('<?= site_url('admin2053/admin/add') ?>', function() {
+        $('#editor_add').load('<?= site_url('admin0503/admin/add') ?>', function() {
             $('#add').modal({
                 show: true
             });
         });
     }
 </script>
+
 <?php $this->endsection() ?>

@@ -38,7 +38,7 @@
         <br>
         <span id="report"></span>
 
-        <input type="submit" name="submit" value="<?= $tombol ?>" class="btn btn-primary mt-3" />
+        <input type="submit" name="submit" value="<?= $tombol ?>" class="btn btn-success mt-3" />
     </form>
 </div>
 <script>
@@ -57,7 +57,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: "<?= site_url('admin2053/admin/submitdata') ?>",
+                url: "<?= site_url('admin0503/admin/submitdata') ?>",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
@@ -89,7 +89,7 @@
 
             if (kodeKecamatan != '') {
                 $.ajax({
-                    url: '<?= site_url('admin2053/admin/getDesaByKecamatan') ?>',
+                    url: '<?= site_url('admin0503/admin/getDesaByKecamatan') ?>',
                     method: 'POST',
                     data: {
                         kode_kecamatan: kodeKecamatan
