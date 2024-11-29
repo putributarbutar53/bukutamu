@@ -23,11 +23,11 @@ $session = session(); // Mengambil session
     <style>
         body {
             background-image: url('<?= base_url() ?>assets/img/toba.jpg');
-            background-size: cover; /* Menjaga gambar agar selalu menutupi seluruh layar */
-            background-position: center center; /* Memastikan gambar tetap terpusat */
-            background-repeat: no-repeat; /* Menghindari pengulangan gambar */
-            background-attachment: fixed; /* Gambar tetap terpasang ketika scroll */
-            min-height: 100vh; /* Memastikan konten mengisi layar penuh */
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -94,40 +94,38 @@ $session = session(); // Mengambil session
         .text-600 a:hover {
             text-decoration: underline;
         }
-
         /* Animasi teks berjalan */
-        .marquee {
-            width: 100%;
-            overflow: hidden;
-            white-space: nowrap;
-            box-sizing: border-box;
-            margin-bottom: 20px;
-        }
+    .marquee {
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+    }
 
-        .marquee span {
-            display: inline-block;
-            padding-left: 100%;
-            animation: marquee 15s linear infinite;
-            color: white;
-            font-size: 30px;
-            font-weight: bold;
-        }
+    .marquee span {
+        display: inline-block;
+        padding-left: 100%;
+        transform: translateX(100%); /* Mulai di luar layar */
+        animation: marquee 20s linear infinite; /* Gerakan lambat segera dimulai */
+        color: white;
+        font-size: 30px;
+        font-weight: bold;
+        opacity: 1; /* Teks langsung terlihat */
+    }
 
-        @keyframes marquee {
-            0% {
-                transform: translateX(100%);
-            }
-            100% {
-                transform: translateX(-100%);
-            }
+    /* Keyframe untuk teks berjalan */
+    @keyframes marquee {
+        0% {
+            transform: translateX(100%); /* Mulai dari luar layar di kanan */
         }
+        100% {
+            transform: translateX(-100%); /* Bergerak keluar layar di kiri */
+        }
+    }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .login-container {
-                width: 90%;
-            }
-        }
+        
+    
     </style>
 </head>
 
