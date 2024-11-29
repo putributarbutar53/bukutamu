@@ -4,8 +4,10 @@ namespace App\Controllers\Admin0503;
 
 use App\Controllers\BaseController;
 use App\Models\AdminModel;
+use CodeIgniter\Email\Email;
 use App\Models\PengunjungModel;
 use Dompdf\Dompdf;
+use TCPDF;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\DiskusiModel;
 use CodeIgniter\Config\Config;
@@ -35,7 +37,6 @@ class Pengunjung extends BaseController
         $dompdf = new Dompdf();
         $dompdf->loadHtml($html);
 
-        // (Optional) Setup the paper size and orientation
         $dompdf->setPaper('letter', 'potrait');
 
         // Render the HTML as PDF

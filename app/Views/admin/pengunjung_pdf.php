@@ -70,10 +70,12 @@
 
 <body>
     <div class="header">
+        <img src="<?= base_url() ?>assets/img/images.png" alt="Logo Toba" style="max-height: 60px;">
         <h1>Data Pengunjung</h1>
         <p>Dinas Komunikasi dan Informatika</p>
         <p>Kabupaten Toba</p>
     </div>
+
 
     <table>
         <thead>
