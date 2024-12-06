@@ -44,6 +44,7 @@ class PengunjungModel extends Model
         $builder = $this->db->table('pengunjung');
         $builder->select('pengunjung.*, db_data.nama, db_data.alamat, db_data.kecamatan');  // Pilih kolom yang diperlukan
         $builder->join('db_data', 'db_data.nik = pengunjung.nik', 'left');  // Join dengan db_data berdasarkan nik
+        $builder->orderBy('pengunjung.created_at', 'DESC');  // Mengurutkan berdasarkan created_at, terbaru di atas
         $query = $builder->get();
 
         return $query->getResultArray();

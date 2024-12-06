@@ -70,13 +70,15 @@
 
 <body>
     <div class="header">
-        <img src="<?= base_url() ?>assets/img/images.png" alt="Logo Toba" style="max-height: 60px;">
-        <h1>Data Pengunjung</h1>
-        <p>Dinas Komunikasi dan Informatika</p>
-        <p>Kabupaten Toba</p>
+        <div class="header-logo">
+            <?= $imageTag; ?>
+        </div>
+        <div class="header-text">
+            <h1>Data Pengunjung</h1>
+            <p>Dinas Komunikasi dan Informatika</p>
+            <p>Kabupaten Toba</p>
+        </div>
     </div>
-
-
     <table>
         <thead>
             <tr>
@@ -103,30 +105,18 @@
                         <td><?= $row['created_at']; ?></td>
 
                         <!-- Foto -->
-                        <td class="text-center">
-                            <?php
-                            $fotoPath = getenv('dir.uploads.foto') . $row['foto'];
-                            if (!empty($row['foto']) && file_exists(FCPATH . $fotoPath)) :
-                            ?>
-                                <!-- Gunakan Fancybox untuk foto -->
-                                <a href="<?= base_url($fotoPath); ?>" data-fancybox="gallery" data-caption="Foto Pengunjung">
-                                    <img src="<?= base_url($fotoPath); ?>" alt="Foto Pengunjung" style="width: 50px; height: auto;">
-                                </a>
+                        <td>
+                            <?php if ($row['foto_base64']) : ?>
+                                <img src="<?= $row['foto_base64']; ?>" alt="Foto Pengunjung" style="width: 40px; height: 40px;">
                             <?php else : ?>
                                 -
                             <?php endif; ?>
                         </td>
 
                         <!-- Tanda Tangan -->
-                        <td class="text-center">
-                            <?php
-                            $ttdPath = getenv('dir.uploads.ttd') . $row['tanda_tangan'];
-                            if (!empty($row['tanda_tangan']) && file_exists(FCPATH . $ttdPath)) :
-                            ?>
-                                <!-- Gunakan Fancybox untuk tanda tangan -->
-                                <a href="<?= base_url($ttdPath); ?>" data-fancybox="gallery" data-caption="Tanda Tangan Pengunjung">
-                                    <img src="<?= base_url($ttdPath); ?>" alt="Tanda Tangan Pengunjung" style="width: 50px; height: auto;">
-                                </a>
+                        <td>
+                            <?php if ($row['ttd_base64']) : ?>
+                                <img src="<?= $row['ttd_base64']; ?>" alt="Tanda Tangan Pengunjung" style="width: 40px; height: 40px;">
                             <?php else : ?>
                                 -
                             <?php endif; ?>
