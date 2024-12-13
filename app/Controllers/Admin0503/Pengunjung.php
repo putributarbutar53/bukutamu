@@ -90,4 +90,18 @@ class Pengunjung extends BaseController
             return redirect()->to(site_url('admin0503/pengunjung'))->with('error', 'Ops! ID tidak valid atau data tidak dapat dihapus.');
         }
     }
+    public function logout($id)
+    {
+        $data = [
+            'tanggal_keluar' => date('Y-m-d H:i:s')
+        ];
+
+        $updated = $this->pengunjung->update($id, $data);
+
+        if ($updated) {
+            return redirect()->to('/admin0503/pengunjung');
+        } else {
+            return redirect()->to('/admin0503/pengunjung');
+        }
+    }
 }

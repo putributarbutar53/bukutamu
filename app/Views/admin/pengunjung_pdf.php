@@ -87,7 +87,8 @@
                 <th>Alamat</th>
                 <th>Tujuan</th>
                 <th>Kepentingan</th>
-                <th>Tanggal</th>
+                <th>Tgl Berkunjung</th>
+                <th>Tgl Keluar</th>
                 <th class="sort">Foto</th>
                 <th class="sort">Tanda Tangan</th>
             </tr>
@@ -102,7 +103,9 @@
                         <td><?= $row['alamat']; ?></td>
                         <td><?= $row['tujuan']; ?></td>
                         <td><?= $row['kepentingan']; ?></td>
-                        <td><?= $row['created_at']; ?></td>
+                        <td><?= date('d/m/Y H:i', strtotime($row['created_at'])); ?></td>
+                        <td><?= $row['tanggal_keluar'] ? date('d/m/Y H:i', strtotime($row['tanggal_keluar'])) : '-'; ?></td>
+
 
                         <!-- Foto -->
                         <td>

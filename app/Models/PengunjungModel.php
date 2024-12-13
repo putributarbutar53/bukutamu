@@ -14,6 +14,7 @@ class PengunjungModel extends Model
         'tujuan',
         'kepentingan',
         'created_at',
+        'tanggal_keluar',
         'foto',
         'tanda_tangan'
     ]; // Kolom-kolom yang diizinkan untuk diisi/dimodifikasi

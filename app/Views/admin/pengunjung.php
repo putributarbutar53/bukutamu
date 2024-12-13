@@ -28,10 +28,10 @@
                             <th class="sort">Kec.</th>
                             <th class="sort">Tujuan</th>
                             <th class="sort">Kepentingan</th>
-                            <th class="sort">Tanggal Kunjungan</th>
+                            <th class="sort">Tgl Kunjungan</th>
                             <th class="sort">Foto</th>
                             <th class="sort">Tanda Tangan</th>
-                            <th class="sort">Keluar</th>
+                            <th class="sort">Tgl Keluar</th>
                             <th class="sort">Aksi</th>
                         </tr>
                     </thead>
@@ -74,11 +74,16 @@
                                         <?php endif; ?>
                                     </td>
                                     <td class="text-center">
-                                        <a href="<?= site_url('admin0503/pengunjung/logout/' . $row['id']) ?>"
-                                            class="btn btn-warning btn-sm">
-                                            <i class="fas fa-sign-out-alt"></i> Keluar
-                                        </a>
+                                        <?php if ($row['tanggal_keluar'] === NULL) : ?>
+                                            <a href="<?= site_url('admin0503/pengunjung/logout/' . $row['id']) ?>"
+                                                class="btn btn-warning btn-sm">
+                                                <i class="fas fa-sign-out-alt"></i> Keluar
+                                            </a>
+                                        <?php else : ?>
+                                            <?= date('d-m-Y H:i', strtotime($row['tanggal_keluar'])) ?>
+                                        <?php endif; ?>
                                     </td>
+
                                     <td class="text-center">
                                         <a href="<?= site_url('admin0503/pengunjung/delete/' . $row['id']) ?>"
                                             class="btn btn-danger btn-sm"
