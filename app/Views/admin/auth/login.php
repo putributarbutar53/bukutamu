@@ -21,141 +21,151 @@ $session = session(); // Mengambil session
     <link href="<?= base_url() ?>assets/css/theme.css" rel="stylesheet">
 
     <style>
+        /* Modern Styles for Login Page */
         body {
-            background-image: url('<?= base_url() ?>assets/img/toba.jpg');
+            font-family: 'Poppins', sans-serif;
+            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)), url('<?= base_url() ?>assets/img/toba.jpg');
             background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            min-height: 100vh;
+            background-position: center;
+            height: 100vh;
+            margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'Poppins', sans-serif;
+            color: #fff;
         }
 
-        .login-container {
-            text-align: center;
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            width: 280%;
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
             max-width: 400px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            width: 80px;
         }
 
         h5 {
-            font-family: 'Times New Roman', sans-serif;
-            font-size: 32px;
-            font-weight: 700;
+            text-align: center;
+            font-weight: bold;
+            font-size: 20px;
+            color: #34495e;
             margin-bottom: 20px;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 2px;
         }
 
         .form-control {
+            border-radius: 25px;
+            padding: 12px;
+            font-size: 15px;
+            border: 1px solid #ced4da;
             width: 100%;
-            background: none;
-            border: 2px solid;
-            color: white;
-            padding: 5px;
-            font-size: 18px;
-            cursor: pointer;
-            margin: 12px 0;
+            margin-bottom: 15px;
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
 
         .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
             outline: none;
-            background-color: rgba(255, 255, 255, 1);
         }
 
         .btn-primary {
+            background: linear-gradient(135deg, #6c5ce7, #0984e3);
+            color: #fff;
+            font-weight: 600;
+            border-radius: 25px;
+            padding: 12px;
+            font-size: 15px;
+            border: none;
             width: 100%;
-            background: none;
-            border: 1px solid;
-            color: white;
-            padding: 5px;
-            font-size: 18px;
             cursor: pointer;
-            margin: 12px 0;
+            transition: 0.3s, transform 0.2s;
         }
 
         .btn-primary:hover {
-            background: linear-gradient(135deg, #9013fe, #4a90e2);
-            transform: translateY(-2px);
+            background: linear-gradient(135deg, #5a4cdb, #0874d3);
+            transform: scale(1.05);
         }
 
-        .text-600 a {
-            color: #4a90e2;
-            text-decoration: none;
-            font-weight: 500;
+        .btn-primary:active {
+            transform: scale(1);
         }
 
-        .text-600 a:hover {
-            text-decoration: underline;
-        }
-        /* Animasi teks berjalan */
-    .marquee {
-        width: 100%;
-        overflow: hidden;
-        white-space: nowrap;
-        box-sizing: border-box;
-        margin-bottom: 20px;
-    }
+        /* Responsive Styles */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 20px;
+                max-width: 90%;
+            }
 
-    .marquee span {
-        display: inline-block;
-        padding-left: 100%;
-        transform: translateX(100%); /* Mulai di luar layar */
-        animation: marquee 20s linear infinite; /* Gerakan lambat segera dimulai */
-        color: white;
-        font-size: 30px;
-        font-weight: bold;
-        opacity: 1; /* Teks langsung terlihat */
-    }
+            .logo {
+                width: 60px;
+            }
 
-    /* Keyframe untuk teks berjalan */
-    @keyframes marquee {
-        0% {
-            transform: translateX(100%); /* Mulai dari luar layar di kanan */
-        }
-        100% {
-            transform: translateX(-100%); /* Bergerak keluar layar di kiri */
-        }
-    }
+            h5 {
+                font-size: 18px;
+            }
 
-        
-    
+            .form-control {
+                font-size: 14px;
+            }
+
+            .btn-primary {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
     </style>
 </head>
 
 <body>
-
-    <main class="main" id="top">
-        <div class="container">
-            <div class="row flex-center min-vh-100 py-6">
-                <div class="col-12">
-                    <div class="login-container">
-                        <div class="marquee">
-                            <span>BUKU TAMU DINAS KOMUNIKASI DAN INFORMATIKA KABUPATEN TOBA</span>
-                        </div>
-                        <form method="POST" action="<?php echo site_url('admin0503/login') ?>">
-                            <div class="form-group">
-                                <input class="form-control" type="text" name="username" placeholder="Username" value="<?php if ($session->getFlashdata('username')) echo $session->getFlashdata('username') ?>" />
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control" type="password" name="password" placeholder="Password" />
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-primary btn-block mt-3" type="submit" name="submit">Log in</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+    <!-- Login Content -->
+    <div class="login-card">
+        <!-- Logo -->
+        <div class="logo-container">
+            <img class="logo" src="<?= base_url() ?>assets/img/images.png" alt="Logo">
         </div>
-    </main>
 
+        <!-- Heading -->
+        <h5>Buku Tamu<br>Dinas Komunikasi dan Informatika<br>Kabupaten Toba</h5>
+
+        <!-- Login Form -->
+        <form method="POST" action="<?= site_url('admin0503/login') ?>">
+            <div class="form-group">
+                <input class="form-control" type="text" name="username" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="password" name="password" placeholder="Password" required>
+            </div>
+            <div class="form-group">
+                <button class="btn-primary" type="submit">Log in</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
     <script src="<?= base_url() ?>assets/js/jquery.min.js"></script>
     <script src="<?= base_url() ?>assets/js/popper.min.js"></script>
     <script src="<?= base_url() ?>assets/js/bootstrap.min.js"></script>

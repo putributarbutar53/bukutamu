@@ -19,7 +19,7 @@
                 </a>
                 <br>
                 <br>
-                <table class="table table-sm table-dashboard fs--1 data-table border-bottom" data-options='{"responsive":false,"pagingType":"simple","lengthChange":false,"searching":false,"pageLength":10,"columnDefs":[{"targets":[0,9],"orderable":false}],"language":{"info":"_START_ to _END_ Items of _TOTAL_ — <a href=\"#!\" class=\"font-weight-semi-bold\"> view all <span class=\"fas fa-angle-right\" data-fa-transform=\"down-1\"></span> </a>"},"buttons":["copy","excel"]}'>
+                <table class="table table-sm table-dashboard fs--1 data-table border-bottom" data-options='{"responsive":false,"pagingType":"simple","lengthChange":false,"searching":false,"pageLength":10,"columnDefs":[{"targets":[0,10],"orderable":false}],"language":{"info":"_START_ to _END_ Items of _TOTAL_ — <a href=\"#!\" class=\"font-weight-semi-bold\"> view all <span class=\"fas fa-angle-right\" data-fa-transform=\"down-1\"></span> </a>"},"buttons":["copy","excel"]}'>
                     <thead class="bg-200">
                         <tr>
                             <th class="sort">No</th>
@@ -31,7 +31,8 @@
                             <th class="sort">Tanggal Kunjungan</th>
                             <th class="sort">Foto</th>
                             <th class="sort">Tanda Tangan</th>
-                            <th class="sort">Aksi</th> <!-- Tambahkan kolom aksi -->
+                            <th class="sort">Keluar</th>
+                            <th class="sort">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white">
@@ -72,9 +73,12 @@
                                             -
                                         <?php endif; ?>
                                     </td>
-
-
-
+                                    <td class="text-center">
+                                        <a href="<?= site_url('admin0503/pengunjung/logout/' . $row['id']) ?>"
+                                            class="btn btn-warning btn-sm">
+                                            <i class="fas fa-sign-out-alt"></i> Keluar
+                                        </a>
+                                    </td>
                                     <td class="text-center">
                                         <a href="<?= site_url('admin0503/pengunjung/delete/' . $row['id']) ?>"
                                             class="btn btn-danger btn-sm"
@@ -86,7 +90,7 @@
                             <?php endforeach; ?>
                         <?php else : ?>
                             <tr>
-                                <td colspan="10" class="text-center">No data available</td>
+                                <td colspan="11" class="text-center">No data available</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>

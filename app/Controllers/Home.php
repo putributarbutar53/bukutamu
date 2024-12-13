@@ -238,7 +238,7 @@ class Home extends BaseController
                 $emailTo = 'firgonister@gmail.com';
                 break;
             case 'Sekretaris':
-                $emailTo = 'sekretaris@example.com';
+                $emailTo = 'lisnapasaribu4@gmail.com';
                 break;
             case 'Tata Usaha':
                 $emailTo = 'tata.usaha@example.com';
@@ -258,7 +258,7 @@ class Home extends BaseController
         }
 
         $email = \Config\Services::email();
-        $email->setFrom('butarbutarputri39@gmail.com', 'Dinas Komunikasi dan Informatika');
+        $email->setFrom('lisnapasaribu4@gmail.com', 'Dinas Komunikasi dan Informatika');
         $email->setTo($emailTo);
         $email->setSubject('Pemberitahuan Tamu Baru');
         $email->setMessage($message);
