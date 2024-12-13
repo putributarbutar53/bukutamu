@@ -260,7 +260,10 @@
 
                         <!-- Tombol Daftar -->
                         <div class="col-6 mb-3">
-                            <button class="btn btn-warning w-100" type="submit" style="margin-top: -30px;">Daftar</button>
+                            <button id="btn-daftar" class="btn btn-warning w-100" type="submit" style="margin-top: -30px;">
+                                <span id="spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                                Daftar
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -328,6 +331,7 @@
     </div>
 
     <!-- Jquery JS -->
+    <script src="assets/lib/progressbar.js/progressbar.min.js"></script>
     <script src="<?= base_url() ?>web/js/jquery-3.7.1.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="<?= base_url() ?>web/js/bootstrap.bundle.min.js"></script>
@@ -355,6 +359,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.2.0/html5-qrcode.min.js"></script>
+
     <script>
         // When scan is successful fucntion will produce data
         function onScanSuccess(qrCodeMessage) {
@@ -403,19 +408,6 @@
             }
         });
 
-        // Function to enable speech synthesis
-        function speak(text) {
-            if ('speechSynthesis' in window) {
-                const synth = window.speechSynthesis;
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'id-ID';
-                console.log('Speaking:', text);
-                synth.speak(utterance);
-            } else {
-                console.error('Speech synthesis not supported in this browser.');
-            }
-        }
-
         // Function to convert canvas content to Blob
         function getCanvasBlob(canvas) {
             return new Promise(resolve => {
@@ -425,119 +417,129 @@
             });
         }
 
+        function compressImage(canvas, maxWidth, maxHeight, quality = 0.7) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.src = canvas.toDataURL('image/png'); // Convert canvas to image data URL
+                img.onload = () => {
+                    const ratio = Math.min(maxWidth / img.width, maxHeight / img.height);
+                    const newWidth = img.width * ratio;
+                    const newHeight = img.height * ratio;
+
+                    // Create a new canvas to draw the compressed image
+                    const compressedCanvas = document.createElement('canvas');
+                    const ctx = compressedCanvas.getContext('2d');
+                    compressedCanvas.width = newWidth;
+                    compressedCanvas.height = newHeight;
+                    ctx.drawImage(img, 0, 0, newWidth, newHeight);
+
+                    // Convert the compressed image to Blob
+                    compressedCanvas.toBlob((blob) => {
+                        resolve(blob);
+                    }, 'image/jpeg', quality); // Use 'image/jpeg' for better compression
+                };
+            });
+        }
         // Function to handle form submission
         document.getElementById('main-form').addEventListener('submit', async function(e) {
-            e.preventDefault(); // Prevent default form submission
+            // Menghindari submit form agar spinner muncul sebelum submit
+            e.preventDefault();
+
             const nikInput = document.getElementById('nik-input');
             const tujuanInput = document.getElementById('tujuan-input');
             const kepentinganInput = document.getElementById('kepentingan-input');
             const photoCanvas = document.getElementById('photoCanvas');
             const signatureCanvas = document.getElementById('signature-canvas');
             const photoPreview = document.getElementById('photoPreview');
+            const button = document.getElementById('btn-daftar');
+            const spinner = document.getElementById('spinner');
 
-            // Check if all required fields are filled
+            // Validasi form
+            let validationErrors = '';
+
             if (!nikInput.value) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Mohon untuk mengisi NIK',
-                    text: 'NIK tidak boleh kosong.'
-                });
-                return;
+                validationErrors += 'NIK tidak boleh kosong.\n';
             }
 
             if (!tujuanInput.value) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Mohon untuk memilih tujuan',
-                    text: 'Tujuan harus dipilih.'
-                });
-                return;
+                validationErrors += 'Tujuan harus dipilih.\n';
             }
 
             if (!kepentinganInput.value) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Mohon untuk mengisi kepentingan',
-                    text: 'Kepentingan tidak boleh kosong.'
-                });
-                return;
+                validationErrors += 'Kepentingan tidak boleh kosong.\n';
             }
 
             if (!photoPreview.src) {
+                validationErrors += 'Foto diri harus diambil.\n';
+            }
+
+            if (!signatureCanvas || !isCanvasSigned(signatureCanvas)) {
+                validationErrors += 'Tanda tangan tidak boleh kosong.\n';
+            }
+
+            if (validationErrors) {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Mohon untuk mengambil gambar diri',
-                    text: 'Foto diri harus diambil.'
+                    title: 'Peringatan',
+                    text: validationErrors.trim()
                 });
                 return;
             }
 
-            // Check if signature canvas has been signed (by checking if it's not all white)
-            if (!signatureCanvas || !isCanvasSigned(signatureCanvas)) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Mohon untuk menandatangani',
-                    text: 'Tanda tangan tidak boleh kosong.'
-                });
-                return;
-            }
+            // Menampilkan spinner dan menonaktifkan tombol
+            button.disabled = true;
+            spinner.style.display = 'inline-block';
 
             try {
-                // Prepare FormData to send as multipart data
+                // Persiapkan FormData untuk dikirim
                 const formData = new FormData(e.target);
-
-                // Append photo and signature as files to FormData
                 formData.append('foto', await getCanvasBlob(photoCanvas), 'foto.png');
                 formData.append('tanda_tangan', await getCanvasBlob(signatureCanvas), 'tanda_tangan.png');
 
-                // Send data using fetch
-                fetch(e.target.action, {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'Accept': 'application/json'
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Response Data:', data); // Log response data
-                        if (data.success) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil',
-                                text: 'Data berhasil disimpan.'
-                            });
-                            // Reset form and clear canvas
-                            e.target.reset();
-                            document.getElementById('photoPreview').style.display = 'none';
-                            clearCanvas(); // Clear canvas and set to white
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error!',
-                                text: data.message
-                            });
-                            console.error('Server Error:', data.errors || data.message); // Log server error
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Fetch Error:', error); // Log fetch error
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error!',
-                            text: 'Terjadi kesalahan pada server.'
-                        });
+                // Kirim data menggunakan fetch
+                const response = await fetch(e.target.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: 'Data berhasil disimpan.'
                     });
+                    e.target.reset();
+                    document.getElementById('photoPreview').style.display = 'none';
+                    clearCanvas();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: data.message
+                    });
+                    console.error('Server Error:', data.errors || data.message);
+                }
+
             } catch (error) {
-                console.error('Form Submission Error:', error); // Log form submission error
+                console.error('Fetch Error:', error);
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'Terjadi kesalahan pada proses pengiriman data.'
+                    text: 'Terjadi kesalahan pada server.'
                 });
+            } finally {
+                // Menghentikan spinner dan mengaktifkan tombol kembali
+                button.disabled = false;
+                spinner.style.display = 'none';
             }
         });
+
 
         // Function to check if canvas has been signed (if it is not all white)
         function isCanvasSigned(canvas) {
@@ -584,9 +586,6 @@
             }
         }
     </script>
-
-
-
     <script>
         const canvas = document.getElementById('signature-canvas');
         const context = canvas.getContext('2d');
