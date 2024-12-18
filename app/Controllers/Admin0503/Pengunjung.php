@@ -92,6 +92,7 @@ class Pengunjung extends BaseController
     }
     public function logout($id)
     {
+        date_default_timezone_set('Asia/Jakarta');
         $data = [
             'tanggal_keluar' => date('Y-m-d H:i:s')
         ];
