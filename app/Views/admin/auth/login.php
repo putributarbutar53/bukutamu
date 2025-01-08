@@ -8,12 +8,12 @@ $session = session(); // Mengambil session
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SIRAMA | Login</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="<?= base_url() ?>assets/img/favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url() ?>assets/img/favicons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url() ?>assets/img/favicons/favicon-16x16.png">
-    <link rel="shortcut icon" type="image/x-icon" href="<?= base_url() ?>assets/img/favicons/favicon.ico">
-    <link rel="manifest" href="<?= base_url() ?>assets/img/favicons/manifest.json">
+    <title>Buku Tamu | Admin</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= base_url() ?>favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url() ?>favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url() ?>favicons/favicon-16x16.png">
+    <link rel="shortcut icon" type="image/x-icon" href="<?= base_url() ?>favicons/favicon.ico">
+    <link rel="manifest" href="<?= base_url() ?>favicons/manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <meta name="theme-color" content="#ffffff">
 
@@ -51,6 +51,7 @@ $session = session(); // Mengambil session
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -166,10 +167,10 @@ $session = session(); // Mengambil session
 </body>
 
 </html>
-    <script src="<?= base_url() ?>assets/js/jquery.min.js"></script>
-    <script src="<?= base_url() ?>assets/js/popper.min.js"></script>
-    <script src="<?= base_url() ?>assets/js/bootstrap.min.js"></script>
-    <script src="<?= base_url() ?>assets/js/theme.js"></script>
+<script src="<?= base_url() ?>assets/js/jquery.min.js"></script>
+<script src="<?= base_url() ?>assets/js/popper.min.js"></script>
+<script src="<?= base_url() ?>assets/js/bootstrap.min.js"></script>
+<script src="<?= base_url() ?>assets/js/theme.js"></script>
 </body>
 
 </html>
