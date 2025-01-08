@@ -45,7 +45,11 @@ class PengunjungModel extends Model
     {
         // Query untuk mengambil data pengunjung dan menggabungkannya dengan data dari tabel db_data
         $builder = $this->db->table('pengunjung');
-        $builder->select('pengunjung.*, db_data.nama, db_data.alamat, db_data.kecamatan');  // Pilih kolom yang diperlukan
+        $builder->select('pengunjung.*, 
+                      pengunjung.nama AS nama_pengunjung, 
+                      db_data.nama AS nama_db_data, 
+                      db_data.alamat, 
+                      db_data.kecamatan');  // Pilih kolom yang diperlukan dan beri alias pada kolom nama
         $builder->join('db_data', 'db_data.nik = pengunjung.nik', 'left');  // Join dengan db_data berdasarkan nik
         $builder->orderBy('pengunjung.created_at', 'DESC');  // Mengurutkan berdasarkan created_at, terbaru di atas
         $query = $builder->get();

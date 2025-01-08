@@ -25,7 +25,7 @@
                             <th class="sort">No</th>
                             <th class="sort">Nama/NIK Pengunjung</th>
                             <th class="sort">Alamat</th>
-                            <th class="sort">Kec.</th>
+                            <th class="sort"></th>
                             <th class="sort">Tujuan</th>
                             <th class="sort">Kepentingan</th>
                             <th class="sort">Tgl Kunjungan</th>
@@ -40,16 +40,16 @@
                             <?php $no = 1; ?>
                             <?php foreach ($pengunjung as $row) : ?>
                                 <tr>
-                                    <td class="text-center"><?= $no++; ?></td>
-                                    <td><?= !empty($row['nama']) ? $row['nama'] : $row['nik'] . ' (Bukan Warga Toba)'; ?></td>
-                                    <td><?= !empty($row['alamat']) ? $row['alamat'] : 'Alamat tidak ditemukan'; ?></td>
-                                    <td><?= $row['kecamatan']; ?></td>
-                                    <td><?= $row['tujuan']; ?></td>
-                                    <td><?= $row['kepentingan']; ?></td>
-                                    <td class="text-center"><?= $row['created_at']; ?></td>
+                                    <td class="text-center"><?= esc($no++); ?></td>
+                                    <td><?= !empty($row['nama_db_data']) ? esc($row['nama_db_data']) : esc($row['nama']); ?></td>
+                                    <td><?= !empty($row['alamat']) ? esc($row['alamat']) : esc($row['asal']); ?></td>
+                                    <td></td>
+                                    <td><?= esc($row['tujuan']); ?></td>
+                                    <td><?= esc($row['kepentingan']); ?></td>
+                                    <td class="text-center"><?= esc($row['created_at']); ?></td>
                                     <td class="text-center">
                                         <?php
-                                        $fotoPath = getenv('dir.uploads.foto') . $row['foto'];
+                                        $fotoPath = getenv('dir.uploads.foto') . esc($row['foto']);
 
                                         if (!empty($row['foto']) && file_exists(FCPATH . $fotoPath)) :
                                         ?>
@@ -62,7 +62,7 @@
                                     </td>
                                     <td class="text-center">
                                         <?php
-                                        $ttdPath = getenv('dir.uploads.ttd') . $row['tanda_tangan'];
+                                        $ttdPath = getenv('dir.uploads.ttd') . esc($row['tanda_tangan']);
 
                                         if (!empty($row['tanda_tangan']) && file_exists(FCPATH . $ttdPath)) :
                                         ?>
@@ -75,23 +75,24 @@
                                     </td>
                                     <td class="text-center">
                                         <?php if ($row['tanggal_keluar'] === NULL) : ?>
-                                            <a href="<?= site_url('admin0503/pengunjung/logout/' . $row['id']) ?>"
+                                            <a href="<?= site_url('admin0503/pengunjung/logout/' . esc($row['id'])) ?>"
                                                 class="btn btn-warning btn-sm">
                                                 <i class="fas fa-sign-out-alt"></i> Keluar
                                             </a>
                                         <?php else : ?>
-                                            <?= date('d-m-Y H:i', strtotime($row['tanggal_keluar'])) ?>
+                                            <?= esc(date('d-m-Y H:i', strtotime($row['tanggal_keluar']))); ?>
                                         <?php endif; ?>
                                     </td>
 
                                     <td class="text-center">
-                                        <a href="<?= site_url('admin0503/pengunjung/delete/' . $row['id']) ?>"
+                                        <a href="<?= site_url('admin0503/pengunjung/delete/' . esc($row['id'])) ?>"
                                             class="btn btn-danger btn-sm"
                                             onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </td>
                                 </tr>
+
                             <?php endforeach; ?>
                         <?php else : ?>
                             <tr>
