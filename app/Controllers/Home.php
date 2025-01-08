@@ -62,6 +62,8 @@ class Home extends BaseController
         $nik = $this->request->getPost('nik');
         $tujuan = $this->request->getPost('tujuan');
         $kepentingan = $this->request->getPost('kepentingan');
+        $nama = $this->request->getPost('nama'); // Ambil nama
+        $asal = $this->request->getPost('asal'); // Ambil asal
 
         if (!$nik || !$tujuan || !$kepentingan) {
             return $this->response->setJSON(['success' => false, 'message' => 'Please complete all fields.']);
@@ -101,6 +103,8 @@ class Home extends BaseController
             'nik' => $nik,
             'tujuan' => $tujuan,
             'kepentingan' => $kepentingan,
+            'nama' => $nama, // Tambahkan nama
+            'asal' => $asal, // Tambahkan asal
             'foto' => $fotoName,
             'tanda_tangan' => $ttdName
         ];
@@ -132,16 +136,10 @@ class Home extends BaseController
         if ($userData) {
             $nama = $userData['nama'];
             $alamat = $userData['alamat'];
-            $kelurahan = $userData['kelurahan'];
-            $kecamatan = $userData['kecamatan'];
-            $kabupaten = $userData['kabupaten'];
         } else {
 
-            $nama = 'Bukan Warga Toba';
-            $alamat = 'Bukan Warga Toba';
-            $kelurahan = 'Bukan Warga Toba';
-            $kecamatan = 'Bukan Warga Toba';
-            $kabupaten = 'Bukan Warga Toba';
+            $nama = $data['nama'];
+            $alamat = $data['asal'];
         }
 
 
@@ -206,20 +204,8 @@ class Home extends BaseController
                         <td>{$nama}</td>
                     </tr>
                     <tr>
-                        <th>Alamat</th>
+                        <th>Asal Instansi / Alamat</th>
                         <td>{$alamat}</td>
-                    </tr>
-                    <tr>
-                        <th>Desa/Kel</th>
-                        <td>{$kelurahan}</td>
-                    </tr>
-                    <tr>
-                        <th>Kecamatan</th>
-                        <td>{$kecamatan}</td>
-                    </tr>
-                    <tr>
-                        <th>Kabupaten</th>
-                        <td>{$kabupaten}</td>
                     </tr>
                 </table>
             </div>

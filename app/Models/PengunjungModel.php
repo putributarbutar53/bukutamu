@@ -16,7 +16,9 @@ class PengunjungModel extends Model
         'created_at',
         'tanggal_keluar',
         'foto',
-        'tanda_tangan'
+        'tanda_tangan',
+        'nama',
+        'asal'
     ]; // Kolom-kolom yang diizinkan untuk diisi/dimodifikasi
 
     protected $returnType = 'array'; // Tipe data yang dikembalikan adalah array
