@@ -45,10 +45,6 @@ class AdminTable extends Migration
                 'constraint' => '255',
                 'null' => true
             ],
-            'id_skpd' => [
-                'type' => 'INT',
-                'constraint' => 20
-            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
@@ -58,8 +54,6 @@ class AdminTable extends Migration
                 'null' => true,
             ],
         ]);
-
-        $this->forge->addForeignKey('id_skpd', 'skpd', 'id');
         $this->forge->addPrimaryKey('id');
         $this->forge->createTable('tb_admin');
 

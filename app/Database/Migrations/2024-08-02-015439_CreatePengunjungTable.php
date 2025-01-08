@@ -28,7 +28,10 @@ class CreatePengunjungTable extends Migration
                 'type' => 'TEXT',
                 'null' => false,
             ],
-            'created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP',
+            'created_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
         ]);
 
         $this->forge->addKey('id', true);

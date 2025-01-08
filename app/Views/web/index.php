@@ -71,7 +71,7 @@
 
 <body>
 
-    <audio id="welcome-audio" src="<?= base_url() ?>assets/audio/bataknaraja.mp3" preload="auto"></audio>
+    <!-- <audio id="welcome-audio" src="<?= base_url() ?>assets/audio/bataknaraja.mp3" preload="auto"></audio> -->
 
     <!-- Custom Cursor -->
 
@@ -109,8 +109,8 @@
                       rgba(0, 0, 0, 0.37) 16.65%,
                       #000 100.78%
                     ),
-                    url(<?= base_url() ?>web/images/hero/bg-4.png);
-                "></div>
+                    url(<?= base_url() ?>web/images/hero/bg-4.png);">
+                </div>
                         <div class="container" style="margin-top: -170px;">
                             <div class="row justify-content-center">
                                 <div class="col-lg-6">
@@ -134,8 +134,8 @@
                       rgba(0, 0, 0, 0.37) 16.65%,
                       #000 100.78%
                     ),
-                    url(<?= base_url() ?>web/images/hero/bg-3.png);
-                "></div>
+                    url(<?= base_url() ?>web/images/hero/bg-3.png);">
+    </div>
                         <div class="container" style="margin-top: -170px;">
                             <div class="row justify-content-center">
                                 <div class="col-lg-6">
@@ -159,8 +159,8 @@
                       rgba(0, 0, 0, 0.37) 16.65%,
                       #000 100.78%
                     ),
-                    url(<?= base_url() ?>web/images/hero/bg.png);
-                "></div>
+                    url(<?= base_url() ?>web/images/hero/bg.png);">
+                    </div>
                         <div class="container" style="margin-top: -170px;">
                             <div class="row justify-content-center">
                                 <div class="col-lg-6">
