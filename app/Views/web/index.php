@@ -359,28 +359,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.2.0/html5-qrcode.min.js"></script>
-
-    <script>
-        // When scan is successful fucntion will produce data
-        function onScanSuccess(qrCodeMessage) {
-            document.getElementById("result").innerHTML =
-                '<span class="result">' + qrCodeMessage + "</span>";
-        }
-
-        // When scan is unsuccessful fucntion will produce error message
-        function onScanError(errorMessage) {
-            // Handle Scan Error
-        }
-
-        // Setting up Qr Scanner properties
-        var html5QrCodeScanner = new Html5QrcodeScanner("reader", {
-            fps: 10,
-            qrbox: 250
-        });
-
-        // in
-        html5QrCodeScanner.render(onScanSuccess, onScanError);
-    </script>
     <script>
         document.body.addEventListener('click', () => {
             const audio = document.getElementById('welcome-audio');
@@ -680,7 +658,6 @@
             });
         });
     </script>
-
 </body>
 
 </html>
