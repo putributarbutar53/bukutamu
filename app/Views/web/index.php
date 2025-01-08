@@ -135,8 +135,8 @@
                       #000 100.78%
                     ),
                     url(<?= base_url() ?>web/images/hero/bg-3.png);">
-    </div>
-                        <div class="container" style="margin-top: -170px;">
+        </div>
+                        <div class="container" style="margin-top: -160px;">
                             <div class="row justify-content-center">
                                 <div class="col-lg-6">
                                     <div class="hero-info text-center">
@@ -185,7 +185,7 @@
                       #000 100.78%
                     ),
                     url(<?= base_url() ?>web/images/hero/bg-2.png);"></div>
-                        <div class="container h-100" style="margin-top: -170px;">
+                        <div class="container h-100" style="margin-top: -160px;">
                             <div class="row justify-content-center">
                                 <div class="col-lg-6">
                                     <div class="hero-info text-center">
@@ -212,6 +212,14 @@
                 <input type="hidden" id="tanda-tangan-input" name="tanda_tangan">
                 <div class="row">
                     <div class="col-12 col-md-6 mb-3">
+                        <input id="nama-input" name="nama" class="form-control" type="text" placeholder="Nama" style="width: 100%; box-sizing: border-box;" />
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <input id="asal-input" name="asal" class="form-control" type="text" placeholder="Asal Instansi / Alamat" style="width: 100%; box-sizing: border-box;" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6 mb-3">
                         <input id="nik-input" name="nik" class="form-control" type="number" placeholder="NIK" style="width: 100%; box-sizing: border-box;" />
                     </div>
                     <div class="col-12 col-md-6 mb-3">
@@ -227,7 +235,6 @@
                             </select>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="row">
