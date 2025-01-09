@@ -221,10 +221,10 @@ class Home extends BaseController
         $emailTo = '';
         switch ($data['tujuan']) {
             case 'Kepala Dinas':
-                $emailTo = 'firgonister@gmail.com';
+                $emailTo = 'kadis@gmail.com';
                 break;
             case 'Sekretaris':
-                $emailTo = 'lisnapasaribu4@gmail.com';
+                $emailTo = 'sekre@gmail.com';
                 break;
             case 'Tata Usaha':
                 $emailTo = 'tata.usaha@example.com';

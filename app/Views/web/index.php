@@ -111,7 +111,7 @@
                     ),
                     url(<?= base_url() ?>web/images/hero/bg-4.png);
                 "></div>
-                        <div class="container" style="margin-top: -160px;">
+                        <div class="container" style="margin-top: -170px;">
                             <div class="row justify-content-center">
                                 <div class="col-lg-6">
                                     <div class="hero-info text-center">
@@ -136,7 +136,7 @@
                     ),
                     url(<?= base_url() ?>web/images/hero/bg-3.png);
                 "></div>
-                        <div class="container" style="margin-top: -160px;">
+                        <div class="container" style="margin-top: -170px;">
                             <div class="row justify-content-center">
                                 <div class="col-lg-6">
                                     <div class="hero-info text-center">
@@ -161,7 +161,7 @@
                     ),
                     url(<?= base_url() ?>web/images/hero/bg.png);
                 "></div>
-                        <div class="container" style="margin-top: -160px;">
+                        <div class="container" style="margin-top: -170px;">
                             <div class="row justify-content-center">
                                 <div class="col-lg-6">
                                     <div class="hero-info text-center">
@@ -185,7 +185,7 @@
                       #000 100.78%
                     ),
                     url(<?= base_url() ?>web/images/hero/bg-2.png);"></div>
-                        <div class="container h-100" style="margin-top: -160px;">
+                        <div class="container h-100" style="margin-top: -170px;">
                             <div class="row justify-content-center">
                                 <div class="col-lg-6">
                                     <div class="hero-info text-center">
