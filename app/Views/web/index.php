@@ -477,9 +477,9 @@
                 validationErrors += 'Kepentingan tidak boleh kosong.\n';
             }
 
-            if (!photoPreview.src) {
-                validationErrors += 'Foto diri harus diambil.\n';
-            }
+            // if (!photoPreview.src) {
+            //     validationErrors += 'Foto diri harus diambil.\n';
+            // }
 
             if (!signatureCanvas || !isCanvasSigned(signatureCanvas)) {
                 validationErrors += 'Tanda tangan tidak boleh kosong.\n';
