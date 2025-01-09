@@ -566,16 +566,16 @@
         }
 
         // Function to clear the signature canvas
-        document.getElementById('clear-canvas').addEventListener('click', function() {
-            const signatureCanvas = document.getElementById('signature-canvas');
-            if (signatureCanvas) {
-                const ctx = signatureCanvas.getContext('2d');
-                ctx.clearRect(0, 0, signatureCanvas.width, signatureCanvas.height);
-                ctx.fillStyle = '#ffffff'; // Set background to white
-                ctx.fillRect(0, 0, signatureCanvas.width, signatureCanvas.height); // Fill with white
-            }
-        });
-        document.getElementById('clear-canvas').addEventListener('touchstart', function() {
+        // document.getElementById('clear-canvas').addEventListener('click', function() {
+        //     const signatureCanvas = document.getElementById('signature-canvas');
+        //     if (signatureCanvas) {
+        //         const ctx = signatureCanvas.getContext('2d');
+        //         ctx.clearRect(0, 0, signatureCanvas.width, signatureCanvas.height);
+        //         ctx.fillStyle = '#ffffff'; // Set background to white
+        //         ctx.fillRect(0, 0, signatureCanvas.width, signatureCanvas.height); // Fill with white
+        //     }
+        // });
+        document.getElementById('clear-canvas').addEventListener('pointerdown', function() {
             const signatureCanvas = document.getElementById('signature-canvas');
             if (signatureCanvas) {
                 const ctx = signatureCanvas.getContext('2d');
