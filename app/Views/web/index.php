@@ -578,19 +578,43 @@
             }
         });
 
-        // Untuk Mobile (Touch)
-        document.getElementById('clear-canvas').addEventListener('touchstart', function(event) {
-            event.preventDefault(); // Mencegah scroll atau perilaku default lainnya
+        document.getElementById('signature-canvas').addEventListener('touchstart', function(event) {
+            event.preventDefault(); // Mencegah scroll dan zoom
 
             const signatureCanvas = document.getElementById('signature-canvas');
-            if (signatureCanvas) {
+            const ctx = signatureCanvas.getContext('2d');
+            const rect = signatureCanvas.getBoundingClientRect(); // Dapatkan posisi relatif canvas
+
+            // Ambil koordinat sentuhan pertama
+            const touch = event.touches[0];
+            const x = touch.clientX - rect.left; // Sesuaikan dengan posisi relatif
+            const y = touch.clientY - rect.top;
+
+            ctx.beginPath();
+            ctx.moveTo(x, y); // Mulai menggambar
+            isDrawing = true;
+        });
+
+        document.getElementById('signature-canvas').addEventListener('touchmove', function(event) {
+            event.preventDefault(); // Mencegah scroll atau zoom saat menggambar
+
+            if (isDrawing) {
+                const signatureCanvas = document.getElementById('signature-canvas');
                 const ctx = signatureCanvas.getContext('2d');
-                ctx.clearRect(0, 0, signatureCanvas.width, signatureCanvas.height);
-                ctx.fillStyle = '#ffffff'; // Set background to white
-                ctx.fillRect(0, 0, signatureCanvas.width, signatureCanvas.height); // Fill with white
+                const rect = signatureCanvas.getBoundingClientRect(); // Dapatkan posisi relatif canvas
+
+                const touch = event.touches[0];
+                const x = touch.clientX - rect.left; // Sesuaikan dengan posisi relatif
+                const y = touch.clientY - rect.top;
+
+                ctx.lineTo(x, y); // Gambar garis menuju posisi sentuhan
+                ctx.stroke(); // Gambarkan
             }
         });
 
+        document.getElementById('signature-canvas').addEventListener('touchend', function() {
+            isDrawing = false; // Berhenti menggambar
+        });
 
         // Function to clear both canvases and reset to white
         function clearCanvas() {
