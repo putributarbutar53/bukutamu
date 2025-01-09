@@ -6,7 +6,8 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover">
+
     <title>Buku Tamu Digital - Dinas Komunikasi dan Informatika</title>
 
     <link rel="icon" href="<?= base_url() ?>web/images/favicon.ico" type="image/gif" sizes="20x20" />
@@ -41,6 +42,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+      
+
         .swiper {
             height: 100vh;
         }
@@ -64,6 +67,13 @@
             height: 100%;
             background-size: cover;
             background-position: center;
+        }
+
+        @media (max-width: 768px) {
+            .cta-wrap .cta-single p {
+                display: inline-block;
+                margin-right: 10px;
+            }
         }
     </style>
 
@@ -110,7 +120,7 @@
                       #000 100.78%
                     ),
                     url(<?= base_url() ?>web/images/hero/bg-4.png);">
-                </div>
+                        </div>
                         <div class="container" style="margin-top: -170px;">
                             <div class="row justify-content-center">
                                 <div class="col-lg-6">
@@ -135,7 +145,7 @@
                       #000 100.78%
                     ),
                     url(<?= base_url() ?>web/images/hero/bg-3.png);">
-        </div>
+                        </div>
                         <div class="container" style="margin-top: -160px;">
                             <div class="row justify-content-center">
                                 <div class="col-lg-6">
@@ -160,7 +170,7 @@
                       #000 100.78%
                     ),
                     url(<?= base_url() ?>web/images/hero/bg.png);">
-                    </div>
+                        </div>
                         <div class="container" style="margin-top: -170px;">
                             <div class="row justify-content-center">
                                 <div class="col-lg-6">
@@ -202,9 +212,8 @@
             </div>
         </div>
 
-
         <!-- Form placed outside swiper-wrapper -->
-        <div class="form-container position-absolute w-100 d-flex justify-content-center">
+        <div class="form-container position-absolute w-100 d-flex justify-content-center mt-5">
 
             <form id="main-form" class="footer-subscribe-form mt-4 p-4" action="<?= site_url('home/submit') ?>" method="post">
                 <?= csrf_field() ?>
@@ -297,12 +306,12 @@
                 </div>
             </div>
         </div>
-        <div class="cta-area cta-area-two">
+        <div class="cta-area cta-area-two mt-5">
             <div class="container">
-                <div class="row gy-5 cta-wrap">
+                <div class="row gy-5 cta-wrap d-flex flex-wrap-nowrap">
                     <div class="col-lg-3 col-md-6 cta-single">
                         <div class="cta-info text-center wow fadeInLeft" data-wow-delay=".0s">
-                            <h2 class="counter-iem">
+                            <h2 class="counter-item">
                                 <span class="odometer d-inline-block" data-odometer-final="<?= $totalVisitors ?>">.</span>
                             </h2>
                             <p>Visitors</p>
@@ -335,6 +344,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 
     <!-- Jquery JS -->
@@ -366,6 +376,22 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.2.0/html5-qrcode.min.js"></script>
+
+
+    <script>
+        // Deteksi focus pada input dan textarea
+        const inputs = document.querySelectorAll('input, textarea, select');
+
+        inputs.forEach((input) => {
+            input.addEventListener('focus', () => {
+                document.querySelector('.form-container').style.marginBottom = '300px';
+            });
+
+            input.addEventListener('blur', () => {
+                document.querySelector('.form-container').style.marginBottom = '0px';
+            });
+        });
+    </script>
     <script>
         document.body.addEventListener('click', () => {
             const audio = document.getElementById('welcome-audio');
