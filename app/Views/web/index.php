@@ -523,7 +523,7 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Berhasil',
-                        text: 'Data berhasil disimpan.'
+                        text: 'Silakan mengunjungi front office untuk mendapatkan Visitor Pass atau ID Card yang perlu Anda kenakan selama berada di gedung ini. Terima kasih atas perhatian dan kerjasamanya.'
                     });
                     e.target.reset();
                     document.getElementById('photoPreview').style.display = 'none';
@@ -690,6 +690,49 @@
                 webcamVideo.srcObject = null;
             });
         });
+    </script>
+    <script>
+        // Mendapatkan lokasi pengguna menggunakan Geolocation API
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                const userLat = position.coords.latitude;
+                const userLon = position.coords.longitude;
+
+                // Titik pusat (misalnya lokasi Diskominfo) - ganti dengan latitude dan longitude yang sesuai
+                const centerLat = 2.327532;
+                const centerLon = 99.050969;
+
+                const radius = 7000;
+
+                // Fungsi untuk menghitung jarak antara dua titik (Haversine Formula)
+                function calculateDistance(lat1, lon1, lat2, lon2) {
+                    const R = 6371; // Radius bumi dalam km
+                    const dLat = (lat2 - lat1) * Math.PI / 180;
+                    const dLon = (lon2 - lon1) * Math.PI / 180;
+                    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                    const distance = R * c * 1000; // Menghitung jarak dalam meter
+                    return distance;
+                }
+
+                // Menghitung jarak antara pengguna dan pusat
+                const distance = calculateDistance(userLat, userLon, centerLat, centerLon);
+
+                // Cek apakah pengguna berada dalam radius yang diinginkan
+                if (distance <= radius) {
+                    alert("Akses diperbolehkan, Anda berada dalam radius yang diizinkan.");
+                } else {
+                    alert("Akses diblokir, Anda berada di luar radius yang diizinkan.");
+                    window.location.href = "https://www.google.com"; // Redirect atau tampilkan pesan error
+                }
+            }, function(error) {
+                alert("Gagal mendapatkan lokasi. Pastikan izin lokasi diaktifkan.");
+            });
+        } else {
+            alert("Geolocation tidak didukung oleh browser Anda.");
+        }
     </script>
 </body>
 
