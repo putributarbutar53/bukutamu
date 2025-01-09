@@ -99,7 +99,7 @@
                 <?php foreach ($pengunjung as $row) : ?>
                     <tr>
                         <td><?= $no++; ?></td>
-                        <td><?= !empty($row['nama']) ? $row['nama'] : $row['nik'] . ' (Bukan Warga Toba)'; ?></td>
+                        <td><?= !empty($row['nama_db_data']) ? $row['nama_db_data'] : $row['nama']; ?></td>
                         <td><?= $row['alamat']; ?></td>
                         <td><?= $row['tujuan']; ?></td>
                         <td><?= $row['kepentingan']; ?></td>

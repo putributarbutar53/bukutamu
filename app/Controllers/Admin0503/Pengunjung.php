@@ -44,11 +44,11 @@ class Pengunjung extends BaseController
 
         foreach ($data['pengunjung'] as &$row) {
             // Foto
-            $fotoPath = FCPATH . getenv('dir.uploads.foto') . $row['foto'];
+            $fotoPath = FCPATH . 'uploads/foto/' . $row['foto'];
             $row['foto_base64'] = $this->getBase64Image($fotoPath);
 
             // Tanda Tangan
-            $ttdPath = FCPATH . getenv('dir.uploads.ttd') . $row['tanda_tangan'];
+            $ttdPath = FCPATH . 'uploads/tanda_tangan/' . $row['tanda_tangan'];
             $row['ttd_base64'] = $this->getBase64Image($ttdPath);
         }
 

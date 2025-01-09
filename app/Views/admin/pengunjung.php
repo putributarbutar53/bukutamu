@@ -47,22 +47,26 @@
                                     <td><?= esc($row['tujuan']); ?></td>
                                     <td><?= esc($row['kepentingan']); ?></td>
                                     <td class="text-center"><?= esc($row['created_at']); ?></td>
-                                    <td class="text-center">
+                                   <td class="text-center">
                                         <?php
-                                        $fotoPath = getenv('dir.uploads.foto') . esc($row['foto']);
-
+                                        // Path langsung ke folder uploads/foto
+                                        $fotoPath = 'uploads/foto/' . esc($row['foto']);
+                                    
+                                        // Pastikan file foto ada dan dapat ditemukan
                                         if (!empty($row['foto']) && file_exists(FCPATH . $fotoPath)) :
                                         ?>
+                                            <!-- Gambar ditampilkan jika file ada -->
                                             <a href="<?= base_url($fotoPath); ?>" data-fancybox="gallery" data-caption="Foto Pengunjung">
                                                 <img src="<?= base_url($fotoPath); ?>" alt="Foto Pengunjung" style="width: 50px; height: auto;">
                                             </a>
                                         <?php else : ?>
+                                            <!-- Jika tidak ada foto, tampilkan tanda "-" -->
                                             -
                                         <?php endif; ?>
                                     </td>
                                     <td class="text-center">
                                         <?php
-                                        $ttdPath = getenv('dir.uploads.ttd') . esc($row['tanda_tangan']);
+                                        $ttdPath = 'uploads/tanda_tangan/' . esc($row['tanda_tangan']);
 
                                         if (!empty($row['tanda_tangan']) && file_exists(FCPATH . $ttdPath)) :
                                         ?>
