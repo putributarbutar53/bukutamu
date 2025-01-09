@@ -11,7 +11,6 @@
     <title>Buku Tamu Digital - Dinas Komunikasi dan Informatika</title>
 
     <link rel="icon" href="<?= base_url() ?>web/images/favicon.ico" type="image/gif" sizes="20x20" />
-
     <!-- Box Icon CSS -->
     <link rel="stylesheet" href="<?= base_url() ?>web/css/boxicons.min.css" />
     <!-- Bootstrap Icon CSS -->
@@ -42,8 +41,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-      
-
         .swiper {
             height: 100vh;
         }
@@ -213,7 +210,7 @@
         </div>
 
         <!-- Form placed outside swiper-wrapper -->
-        <div class="form-container position-absolute w-100 d-flex justify-content-center mt-5">
+        <div class="form-container position-absolute w-100 d-flex justify-content-center mt-3">
 
             <form id="main-form" class="footer-subscribe-form mt-4 p-4" action="<?= site_url('home/submit') ?>" method="post">
                 <?= csrf_field() ?>
