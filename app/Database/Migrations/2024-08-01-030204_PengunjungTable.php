@@ -29,10 +29,8 @@ class PengunjungTable extends Migration
                 'null'       => true,
             ],
             'created_at' => [
-            'type' => 'TIMESTAMP',
-            'null' => true,
-            'default' => 'CURRENT_TIMESTAMP',
-
+                'type' => 'DATETIME',
+                'null' => true,
             ],
         
         ]);
