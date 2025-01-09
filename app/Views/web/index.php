@@ -565,17 +565,10 @@
             return false; // No signature detected
         }
 
-        // Function to clear the signature canvas
-        // document.getElementById('clear-canvas').addEventListener('click', function() {
-        //     const signatureCanvas = document.getElementById('signature-canvas');
-        //     if (signatureCanvas) {
-        //         const ctx = signatureCanvas.getContext('2d');
-        //         ctx.clearRect(0, 0, signatureCanvas.width, signatureCanvas.height);
-        //         ctx.fillStyle = '#ffffff'; // Set background to white
-        //         ctx.fillRect(0, 0, signatureCanvas.width, signatureCanvas.height); // Fill with white
-        //     }
-        // });
-        document.getElementById('clear-canvas').addEventListener('pointerdown', function() {
+        // Untuk Desktop (Mouse)
+        document.getElementById('clear-canvas').addEventListener('mousedown', function(event) {
+            event.preventDefault(); // Mencegah scroll atau perilaku default lainnya
+
             const signatureCanvas = document.getElementById('signature-canvas');
             if (signatureCanvas) {
                 const ctx = signatureCanvas.getContext('2d');
@@ -584,6 +577,20 @@
                 ctx.fillRect(0, 0, signatureCanvas.width, signatureCanvas.height); // Fill with white
             }
         });
+
+        // Untuk Mobile (Touch)
+        document.getElementById('clear-canvas').addEventListener('touchstart', function(event) {
+            event.preventDefault(); // Mencegah scroll atau perilaku default lainnya
+
+            const signatureCanvas = document.getElementById('signature-canvas');
+            if (signatureCanvas) {
+                const ctx = signatureCanvas.getContext('2d');
+                ctx.clearRect(0, 0, signatureCanvas.width, signatureCanvas.height);
+                ctx.fillStyle = '#ffffff'; // Set background to white
+                ctx.fillRect(0, 0, signatureCanvas.width, signatureCanvas.height); // Fill with white
+            }
+        });
+
 
         // Function to clear both canvases and reset to white
         function clearCanvas() {
