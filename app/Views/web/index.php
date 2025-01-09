@@ -575,6 +575,15 @@
                 ctx.fillRect(0, 0, signatureCanvas.width, signatureCanvas.height); // Fill with white
             }
         });
+        document.getElementById('clear-canvas').addEventListener('touchstart', function() {
+            const signatureCanvas = document.getElementById('signature-canvas');
+            if (signatureCanvas) {
+                const ctx = signatureCanvas.getContext('2d');
+                ctx.clearRect(0, 0, signatureCanvas.width, signatureCanvas.height);
+                ctx.fillStyle = '#ffffff'; // Set background to white
+                ctx.fillRect(0, 0, signatureCanvas.width, signatureCanvas.height); // Fill with white
+            }
+        });
 
         // Function to clear both canvases and reset to white
         function clearCanvas() {
